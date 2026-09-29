@@ -44,6 +44,8 @@
     "graphiql": "^1.4.7",
     "graphql": "^15.3.0",
     "ipfs-http-client": "^55.0.0",
+    "tweetnacl": "^0.14.3",
+    "tweetnacl-util": "^0.15.1",
     "isomorphic-fetch": "^3.0.0",
     "node-watch": "^0.7.1",
     "postcss": "^8.2.6",

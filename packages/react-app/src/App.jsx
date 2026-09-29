@@ -10,7 +10,7 @@ import {
 } from "eth-hooks";
 import { useExchangeEthPrice } from "eth-hooks/dapps/dex";
 import React, { useCallback, useEffect, useState } from "react";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Link, Redirect, Route, Switch, useLocation } from "react-router-dom";
 import "./App.css";
 import {
   Account,
@@ -29,7 +29,7 @@ import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
 import { getRPCPollTime, Transactor, Web3ModalSetup } from "./helpers";
-import { Home, ExampleUI, Hints, Subgraph } from "./views";
+import { Home, ExampleUI, Hints, Subgraph, Rwa } from "./views";
 import { useStaticJsonRPC, useGasPrice } from "./hooks";
 
 const { ethers } = require("ethers");
@@ -261,6 +261,22 @@ function App(props) {
 
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
+  // The RWA route is a full-page standalone app — hide the scaffold-eth chrome there.
+  const isRwa = location.pathname.startsWith("/rwa");
+
+  if (isRwa) {
+    return (
+      <div className="App" style={{ background: "#f3f5f8", minHeight: "100vh" }}>
+        <Switch>
+          <Route path="/rwa">
+            <Rwa readContracts={readContracts} localProvider={localProvider} gasPrice={gasPrice} />
+          </Route>
+        </Switch>
+      </div>
+    );
+  }
+  if (!isRwa) return <Redirect to="/rwa" />;
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -307,6 +323,9 @@ function App(props) {
         <Menu.Item key="/">
           <Link to="/">App Home</Link>
         </Menu.Item>
+        <Menu.Item key="/rwa">
+          <Link to="/rwa">🏢 RWA</Link>
+        </Menu.Item>
         <Menu.Item key="/debug">
           <Link to="/debug">Debug Contracts</Link>
         </Menu.Item>
@@ -328,6 +347,9 @@ function App(props) {
         <Route exact path="/">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
           <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
+        </Route>
+        <Route path="/rwa">
+          <Rwa readContracts={readContracts} localProvider={localProvider} gasPrice={gasPrice} />
         </Route>
         <Route exact path="/debug">
           {/*

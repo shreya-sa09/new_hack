@@ -12,6 +12,11 @@ export const BLOCKNATIVE_DAPPID = process.env.REACT_APP_BLOCKNATIVE_DAPP_ID ?? "
 // Docker Hardhat Host
 export const HARDHAT_HOST = process.env.REACT_APP_HARDHAT_HOST ?? "http://localhost";
 
+// Pinata / IPFS for the RWA documents journey.
+// Put your Pinata JWT in packages/react-app/.env as REACT_APP_PINATA_JWT=...
+export const PINATA_JWT = process.env.REACT_APP_PINATA_JWT ?? "";
+export const PINATA_GATEWAY = process.env.REACT_APP_PINATA_GATEWAY ?? "https://gateway.pinata.cloud";
+
 /*
 Decrease the number of RPC calls by passing this value to hooks
 with pollTime (useContractReader, useBalance, etc.).
